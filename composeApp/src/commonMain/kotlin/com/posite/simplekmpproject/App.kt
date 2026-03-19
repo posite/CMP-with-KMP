@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.safeContentPadding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Android
 import androidx.compose.material3.Button
@@ -15,9 +16,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.posite.simplekmpproject.Res
-import com.posite.simplekmpproject.ios_24px
+import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
+import simplekmpproject.composeapp.generated.resources.*
 
 
 @Composable
@@ -40,21 +41,20 @@ fun App() {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    //val painter = painterResource(Res.drawable.ios_24px)
-
-
-//                    if(greeting.contains("Android")) {
-//                        Image(
-//                            imageVector = Icons.Default.Android,
-//                            contentDescription = "Android Logo"
-//                        )
-//                    } else {
-//                        Image(
-//                            painter = painterResource(Res.drawable.ios_24px),
-//                            contentDescription = "IOS Logo"
-//                        )
-//                    }
-                    Text("r : ${Res.drawable.ios_24px}")
+//                    val painter = painterResource(Res.drawable.ios_24px)
+                    if(greeting.contains("Android")) {
+                        Image(
+                            modifier = Modifier.size(150.dp),
+                            imageVector = Icons.Default.Android,
+                            contentDescription = "Android Logo"
+                        )
+                    } else {
+                        Image(
+                            modifier = Modifier.size(150.dp),
+                            painter = painterResource(Res.drawable.ios_24px),
+                            contentDescription = "IOS Logo"
+                        )
+                    }
                     Text("Compose: $greeting")
                 }
             }
