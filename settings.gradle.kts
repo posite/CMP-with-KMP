@@ -1,4 +1,4 @@
-rootProject.name = "SimpleKMPProject"
+rootProject.name = "Simple"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
@@ -13,9 +13,6 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
     }
-}
-plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.10.0"
 }
 
 dependencyResolutionManagement {
@@ -32,4 +29,3 @@ dependencyResolutionManagement {
 }
 
 include(":composeApp")
-include(":androidapp")
