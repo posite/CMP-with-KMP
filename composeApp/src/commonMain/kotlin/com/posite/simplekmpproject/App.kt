@@ -40,7 +40,7 @@ fun App() {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    val painter = painterResource(Res.drawable.ios_24px)
+                    //val painter = painterResource(Res.drawable.ios_24px)
 
 
 //                    if(greeting.contains("Android")) {
