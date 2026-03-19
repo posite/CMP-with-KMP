@@ -16,19 +16,21 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.posite.simplekmpproject.theme.SimpleKMPProjectTheme
 import org.jetbrains.compose.resources.painterResource
 import simplekmpproject.composeapp.generated.resources.*
 
 
 @Composable
+@Preview
 fun App() {
-    SimpleKMPProjectTheme {
+    AppTheme {
         var showContent by remember { mutableStateOf(false) }
         Column(
             modifier = Modifier
-                .background(MaterialTheme.colorScheme.primaryContainer)
+                .background(Color.White)
                 .safeContentPadding()
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
