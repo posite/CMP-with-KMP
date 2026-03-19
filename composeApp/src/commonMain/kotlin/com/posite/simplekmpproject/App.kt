@@ -17,13 +17,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.posite.simplekmpproject.theme.SimpleKMPProjectTheme
 import org.jetbrains.compose.resources.painterResource
 import simplekmpproject.composeapp.generated.resources.*
 
 
 @Composable
 fun App() {
-    MaterialTheme {
+    SimpleKMPProjectTheme {
         var showContent by remember { mutableStateOf(false) }
         Column(
             modifier = Modifier
@@ -60,4 +61,5 @@ fun App() {
             }
         }
     }
+
 }
