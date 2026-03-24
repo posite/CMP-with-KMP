@@ -1,4 +1,4 @@
-package com.example.simple
+package com.example.simple.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
