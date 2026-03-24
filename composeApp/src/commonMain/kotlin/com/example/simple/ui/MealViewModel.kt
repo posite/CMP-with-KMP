@@ -8,13 +8,12 @@ import com.example.simple.util.onSuccess
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlin.collections.emptyList
 
-class MealViewModel(private val repository: MealRepository): ViewModel() {
-    private val _meals : MutableStateFlow<List<MealDto>> = MutableStateFlow(emptyList())
-    val meals : StateFlow<List<MealDto>> = _meals
+class MealViewModel(private val repository: MealRepository) : ViewModel() {
+    private val _meals: MutableStateFlow<List<MealDto>> = MutableStateFlow(emptyList())
+    val meals: StateFlow<List<MealDto>> = _meals
 
-    fun getMeals(): List<MealDto> {
+    fun getMeals() {
         viewModelScope.launch {
             repository.getMeals().onSuccess {
                 _meals.value = it.meals
