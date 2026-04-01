@@ -24,6 +24,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,7 +42,7 @@ import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
 import coil3.request.crossfade
-import coil3.size.Size
+import coil3.size.Precision
 import com.example.simple.data.MealDto
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -53,6 +55,8 @@ fun App() {
 
     MaterialTheme {
         var showContent by remember { mutableStateOf(false) }
+        val meals by viewModel.meals.collectAsState()
+        val hasMeals by remember { derivedStateOf { meals.isNotEmpty() } }
         Scaffold(contentWindowInsets = WindowInsets.safeDrawing) { innerPadding ->
             Column(
                 modifier = Modifier
@@ -64,7 +68,7 @@ fun App() {
                 Button(onClick = { showContent = !showContent }) {
                     Text("Click me!")
                 }
-                AnimatedVisibility(showContent) {
+                AnimatedVisibility(showContent && hasMeals) {
                     //val greeting = remember { Greeting().greet() }
 //                Column(
 //                    modifier = Modifier.fillMaxWidth(),
@@ -95,17 +99,22 @@ fun App() {
 fun MealItem(item: MealDto) {
     val uriHandler = LocalUriHandler.current
     val hasYoutubeLink = item.strYoutube.isNotBlank()
+    val context = LocalPlatformContext.current
+
+    val model = remember(item.strMealThumb) {
+        ImageRequest.Builder(context)
+            .data("${item.strMealThumb}/preview")
+            .crossfade(true)
+            .precision(Precision.INEXACT)
+            .build()
+    }
     Column(
         modifier = Modifier.fillMaxWidth().height(120.dp),
         verticalArrangement = Arrangement.Center
     ) {
         Row {
             AsyncImage(
-                model = ImageRequest.Builder(LocalPlatformContext.current)
-                    .data(item.strMealThumb)
-                    .crossfade(true)
-                    .size(Size.ORIGINAL)
-                    .build(),
+                model = model,
                 contentDescription = item.strMeal,
                 modifier = Modifier
                     .size(100.dp)
