@@ -24,8 +24,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -55,8 +53,6 @@ fun App() {
 
     MaterialTheme {
         var showContent by remember { mutableStateOf(false) }
-        val meals by viewModel.meals.collectAsState()
-        val hasMeals by remember { derivedStateOf { meals.isNotEmpty() } }
         Scaffold(contentWindowInsets = WindowInsets.safeDrawing) { innerPadding ->
             Column(
                 modifier = Modifier
@@ -68,7 +64,7 @@ fun App() {
                 Button(onClick = { showContent = !showContent }) {
                     Text("Click me!")
                 }
-                AnimatedVisibility(showContent && hasMeals) {
+                AnimatedVisibility(showContent && viewModel.currentState.meals.isNotEmpty()) {
                     //val greeting = remember { Greeting().greet() }
 //                Column(
 //                    modifier = Modifier.fillMaxWidth(),
@@ -83,7 +79,7 @@ fun App() {
                         contentPadding = PaddingValues(0.dp, 32.dp)
                     ) {
                         items(
-                            items = viewModel.meals.value,
+                            items = viewModel.currentState.meals,
                             key = { it.idMeal },
                             contentType = { "meal" }) {
                             MealItem(it)
