@@ -74,9 +74,10 @@ Xcode 프로젝트로, `composeApp`이 빌드한 KMP 프레임워크를 iOS 앱�
 |----------|------|
 | `Language` | Kotlin |
 | `UI Framework` | Compose Multiplatform(CMP) |
-| `Dependency Injection` | Koin |
+| `Dependency Injection` | koin |
 | `Network` | Ktor (HTTP Client) |
 | `Concurrency` | Kotlin Coroutines |
+| `Image Loading`| LandscapistImage |
 
 ### Gradle 플러그인
 
@@ -177,9 +178,15 @@ include(":androidapp")
 - `iosMain`: Apple API 브릿지 actual 구현
 - `iosApp`: SwiftUI 진입점 및 KMP 프레임워크 임베드
 
-### 5단계 — 빌드 최적화
-- Gradle Configuration Cache 및 Build Cache 활성화
-- JDK 21 적용, JVM 메모리 최적화(`-Xmx4096M`)
+### 5단계 — 의존성 주입
+- Network를 위한 Ktor, UI 상태 관리를 위한 ViewModel의 의존성 주입을 위해 koin 적용
+  - `commonMain`에 공통으로 사용할 Koin Module 선언 및 초기화 함수 작성
+  - `androidapp`의 Application에서 koin 초기화 함수 호출
+  - `iosMain`에서 KoinHelper.kt에 koin 초기화 함수 작성 후, `iosApp`에서 koin 초기화 함수 호출
+
+### 6단계 — UI 상태 관리 및 이미지 로딩 Library 변경
+- `composeApp`의 App에서 UI의 상태 관리 및 이벤트 관리를 위해 MVI 패턴 적용
+- Coil3 사용 시 버벅임이 있는 이미지 로딩 Library를 속도, 메모리에서 성능이 더 좋은 LandscapistImage로 변경
 
 ---
 
