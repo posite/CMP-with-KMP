@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -17,8 +18,8 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -30,18 +31,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil3.compose.AsyncImage
-import coil3.compose.LocalPlatformContext
-import coil3.request.ImageRequest
-import coil3.request.crossfade
-import coil3.size.Precision
 import com.example.simple.data.MealDto
+import com.skydoves.landscapist.ImageOptions
+import com.skydoves.landscapist.components.rememberImageComponent
+import com.skydoves.landscapist.crossfade.CrossfadePlugin
+import com.skydoves.landscapist.image.LandscapistImage
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -61,7 +59,10 @@ fun App() {
                     .padding(12.dp, innerPadding.calculateTopPadding()),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Button(onClick = { showContent = !showContent }) {
+                Button(
+                    onClick = { showContent = !showContent },
+                    enabled = viewModel.currentState.meals.isNotEmpty()
+                ) {
                     Text("Click me!")
                 }
                 AnimatedVisibility(showContent && viewModel.currentState.meals.isNotEmpty()) {
@@ -95,29 +96,43 @@ fun App() {
 fun MealItem(item: MealDto) {
     val uriHandler = LocalUriHandler.current
     val hasYoutubeLink = item.strYoutube.isNotBlank()
-    val context = LocalPlatformContext.current
+//    val context = LocalPlatformContext.current
 
-    val model = remember(item.strMealThumb) {
-        ImageRequest.Builder(context)
-            .data("${item.strMealThumb}/preview")
-            .crossfade(true)
-            .precision(Precision.INEXACT)
-            .build()
-    }
+//    val model = remember(item.strMealThumb) {
+//        ImageRequest.Builder(context)
+//            .data("${item.strMealThumb}/preview")
+//            .crossfade(true)
+//            .precision(Precision.INEXACT)
+//            .build()
+//    }
     Column(
         modifier = Modifier.fillMaxWidth().height(120.dp),
         verticalArrangement = Arrangement.Center
     ) {
         Row {
-            AsyncImage(
-                model = model,
-                contentDescription = item.strMeal,
-                modifier = Modifier
-                    .size(100.dp)
-                    .clip(RoundedCornerShape(8.dp)) // 모서리 둥글게
-                    .background(Color.LightGray), // 로딩 전 배경색 (플레이스홀더 역할)
-                contentScale = ContentScale.Crop
+            LandscapistImage(
+                imageModel = { "${item.strMealThumb}/preview" },
+                modifier = Modifier.size(100.dp),
+                component = rememberImageComponent { CrossfadePlugin(200) },
+                imageOptions = ImageOptions(
+                    contentScale = ContentScale.Crop,
+                    alignment = Alignment.Center
+                ),
+                loading = {
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    }
+                }
             )
+//            AsyncImage(
+//                model = model,
+//                contentDescription = item.strMeal,
+//                modifier = Modifier
+//                    .size(100.dp)
+//                    .clip(RoundedCornerShape(8.dp)) // 모서리 둥글게
+//                    .background(Color.LightGray), // 로딩 전 배경색 (플레이스홀더 역할)
+//                contentScale = ContentScale.Crop
+//            )
 
             Spacer(Modifier.size(16.dp))
             Column {

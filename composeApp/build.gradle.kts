@@ -15,7 +15,7 @@ kotlin {
         minSdk = libs.versions.android.minSdk.get().toInt()
 
         withJava()
-        withHostTestBuilder {  }.configure {  }
+        withHostTestBuilder { }.configure { }
         withDeviceTestBuilder {
             sourceSetTreeName = "test"
         }
@@ -27,7 +27,7 @@ kotlin {
             enable = true
         }
     }
-    
+
     listOf(
         iosArm64(),
         iosSimulatorArm64()
@@ -37,7 +37,7 @@ kotlin {
             isStatic = true
         }
     }
-    
+
     sourceSets {
         androidMain.dependencies {
             implementation(libs.compose.uiToolingPreview)
@@ -68,6 +68,9 @@ kotlin {
             //coil
             implementation(libs.coil.compose)
             implementation(libs.coil.network)
+
+            //landscapist image
+            implementation(libs.landscapist.image)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
